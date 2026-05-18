@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عشر ذي الحجة - تحدي العائلة</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<style>
+:root{--gold:#C8972B;--gold-light:#F0C04A;--gold-pale:#FFF8E7;--emerald:#1A6B4A;--emerald-light:#2D9B6F;--emerald-pale:#E8F5EF;--cream:#FAF6EF;--ink:#1C1A16;--ink-soft:#4A4540;--sky:#2B7AAB;--rose:#C0392B;--shadow:rgba(28,26,22,.12);--ab:#0F1923;--ac:#1A2736;--abr:#2A3F55;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 20% 10%,rgba(200,151,43,.08) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 80% 80%,rgba(26,107,74,.07) 0%,transparent 60%),repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(200,151,43,.02) 40px,rgba(200,151,43,.02) 41px);pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;}
+header{background:linear-gradient(135deg,var(--emerald) 0%,#0F3D2A 100%);overflow:hidden;position:relative;}
+header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='.03'%3E%3Cpath d='M30 0L60 30L30 60L0 30z'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+.header-inner{max-width:960px;margin:0 auto;padding:28px 24px 20px;text-align:center;position:relative;}
+.header-badge{display:inline-block;background:rgba(200,151,43,.2);border:1px solid rgba(200,151,43,.4);color:var(--gold-light);font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 16px;border-radius:20px;margin-bottom:12px;}
+header h1{font-family:'Amiri',serif;font-size:clamp(24px,5vw,40px);color:#fff;line-height:1.3;margin-bottom:6px;}
+header h1 span{color:var(--gold-light);}
+header p{color:rgba(255,255,255,.7);font-size:14px;margin-bottom:20px;}
+.admin-header-btn{position:absolute;left:20px;top:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);padding:8px 14px;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
+.admin-header-btn:hover{background:rgba(255,255,255,.2);color:#fff;}
+.day-strip{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding-bottom:24px;}
+.day-pill{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;background:transparent;}
+.day-pill.done{background:var(--gold);border-color:var(--gold);color:#fff;}
+.day-pill.active{background:#fff;border-color:#fff;color:var(--emerald);transform:scale(1.15);box-shadow:0 0 0 4px rgba(255,255,255,.2);}
+.main{max-width:960px;margin:0 auto;padding:24px 16px 80px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:680px){.main{grid-template-columns:1fr;}}
+.full{grid-column:1/-1;}
+.card{background:#fff;border-radius:20px;padding:20px;box-shadow:0 2px 16px var(--shadow);border:1px solid rgba(200,151,43,.1);animation:fadeUp .4s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.card-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card-title .icon{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.icon-gold{background:rgba(200,151,43,.15);}
+.icon-green{background:rgba(26,107,74,.12);}
+.icon-sky{background:rgba(43,122,171,.12);}
+.icon-rose{background:rgba(192,57,43,.1);}
+
+/* PODIUM */
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:10px 0 0;}
+.podium-place{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;max-width:120px;cursor:pointer;}
+.podium-avatar{font-size:30px;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 4px 14px rgba(0,0,0,.14);position:relative;transition:transform .2s;}
+.podium-place:hover .podium-avatar{transform:scale(1.05);}
+.podium-avatar .crown{position:absolute;top:-18px;font-size:20px;}
+.podium-name{font-size:12px;font-weight:700;text-align:center;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.podium-pts{font-size:11px;font-weight:700;color:var(--gold);}
+.podium-block{width:100%;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:center;font-family:'Amiri',serif;font-size:20px;font-weight:700;color:#fff;}
+.p1 .podium-block{height:88px;background:linear-gradient(135deg,#C0A020,#E8C840);box-shadow:0 -4px 20px rgba(200,160,32,.4);}
+.p2 .podium-block{height:68px;background:linear-gradient(135deg,#7A7A7A,#ADADAD);box-shadow:0 -4px 14px rgba(130,130,130,.3);}
+.p3 .podium-block{height:52px;background:linear-gradient(135deg,#9C6030,#CB8A50);box-shadow:0 -4px 12px rgba(156,96,48,.3);}
+.p1 .podium-avatar{background:#FFF3CD;border-color:#FFD700;width:68px;height:68px;font-size:34px;}
+.p2 .podium-avatar{background:#F0F0F0;border-color:#BBBBBB;}
+.p3 .podium-avatar{background:#FFF0E8;border-color:#CB8A50;}
+.leaderboard-rest{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.member-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--cream);transition:all .2s;cursor:pointer;}
+.member-row:hover{background:var(--gold-pale);}
+.rank-num{width:28px;height:28px;border-radius:8px;background:rgba(0,0,0,.06);color:#888;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.m-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:#eee;flex-shrink:0;}
+.m-info{flex:1;}
+.m-name{font-size:14px;font-weight:700;}
+.m-pts-row{display:flex;align-items:center;gap:6px;margin-top:3px;}
+.prog-bar{height:5px;border-radius:3px;background:#eee;flex:1;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald-light),var(--gold));transition:width .6s;}
+.pts-lbl{font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap;}
+
+.challenge-list{display:flex;flex-direction:column;gap:10px;}
+.challenge-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--cream);cursor:pointer;transition:all .2s;border:2px solid transparent;user-select:none;}
+.challenge-item:hover{border-color:var(--gold-light);background:var(--gold-pale);}
+.challenge-item.checked{background:var(--emerald-pale);border-color:var(--emerald-light);}
+.chk-box{width:24px;height:24px;border-radius:8px;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:13px;}
+.challenge-item.checked .chk-box{background:var(--emerald);border-color:var(--emerald);color:#fff;}
+.ch-info{flex:1;}
+.ch-name{font-size:14px;font-weight:600;}
+.ch-pts{font-size:11px;color:var(--gold);font-weight:700;margin-top:2px;}
+
+.quiz-q{font-family:'Amiri',serif;font-size:17px;line-height:1.6;margin-bottom:14px;text-align:center;padding:12px;background:var(--gold-pale);border-radius:12px;border-right:4px solid var(--gold);}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{padding:10px 16px;border-radius:12px;border:2px solid #eee;cursor:pointer;font-size:14px;transition:all .2s;text-align:right;background:#fff;}
+.quiz-opt:hover{border-color:var(--gold);background:var(--gold-pale);}
+.quiz-opt.correct{background:var(--emerald-pale);border-color:var(--emerald);color:var(--emerald);font-weight:700;}
+.quiz-opt.wrong{background:#FFF0EF;border-color:#e74c3c;color:#e74c3c;}
+.quiz-fb{margin-top:12px;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;text-align:center;display:none;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:var(--emerald-pale);color:var(--emerald);}
+.quiz-fb.no{background:#FFF0EF;color:#c0392b;}
+.nxt-btn{margin-top:12px;width:100%;padding:10px;border-radius:12px;border:2px solid var(--emerald);background:transparent;color:var(--emerald);font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:none;}
+.nxt-btn:hover{background:var(--emerald);color:#fff;}
+.nxt-btn.show{display:block;}
+
+.wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.wheel-container{position:relative;width:200px;height:200px;}
+.wheel-ptr{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:26px;z-index:5;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));}
+.spin-btn{background:linear-gradient(135deg,var(--gold),#E8A020);color:#fff;border:none;padding:12px 28px;border-radius:30px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(200,151,43,.4);transition:all .2s;}
+.spin-btn:hover{transform:translateY(-2px);}
+.spin-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.spin-res{font-size:13px;font-weight:700;color:var(--emerald);text-align:center;min-height:20px;}
+
+.rem-card{background:linear-gradient(135deg,var(--emerald),#0F3D2A);color:#fff;border:none;position:relative;overflow:hidden;}
+.rem-card::before{content:'🌙';position:absolute;left:-10px;top:-10px;font-size:80px;opacity:.07;}
+.rem-card .card-title{color:var(--gold-light);}
+.rem-list{display:flex;flex-direction:column;gap:8px;}
+.rem-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,.1);border-radius:10px;font-size:13px;}
+.rem-dot{width:8px;height:8px;border-radius:50%;background:var(--gold-light);flex-shrink:0;}
+
+.ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.ach{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;background:var(--cream);text-align:center;border:2px solid transparent;transition:all .2s;}
+.ach:hover{border-color:var(--gold-light);}
+.ach.earned{background:var(--gold-pale);border-color:var(--gold);}
+.ach.locked{opacity:.4;filter:grayscale(1);}
+.ach-icon{font-size:24px;}
+.ach-name{font-size:10px;font-weight:700;color:var(--ink-soft);}
+
+.score-ring{width:110px;height:110px;margin:0 auto 10px;position:relative;}
+.score-ring svg{transform:rotate(-90deg);}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-num{font-family:'Amiri',serif;font-size:50px;font-weight:700;color:var(--gold);line-height:1;}
+
+.mem-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.mem-tab{padding:6px 14px;border-radius:20px;border:2px solid #eee;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.mem-tab.active{background:var(--emerald);border-color:var(--emerald);color:#fff;}
+.add-form{display:flex;gap:8px;margin-top:12px;}
+.add-form input{flex:1;padding:9px 14px;border-radius:12px;border:2px solid #eee;font-family:'Tajawal',sans-serif;font-size:14px;outline:none;transition:border-color .2s;text-align:right;}
+.add-form input:focus{border-color:var(--gold);}
+.add-form button{padding:9px 16px;border-radius:12px;border:none;background:var(--emerald);color:#fff;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.hajj-cd{display:flex;justify-content:center;gap:16px;text-align:center;}
+.cd-unit{display:flex;flex-direction:column;align-items:center;}
+.cd-num{font-family:'Amiri',serif;font-size:30px;font-weight:700;color:var(--gold);width:54px;height:54px;background:var(--gold-pale);border-radius:14px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(200,151,43,.3);}
+.cd-lbl{font-size:11px;color:var(--ink-soft);margin-top:4px;font-weight:700;}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;transition:transform .4s;z-index:2000;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:24px;padding:28px;max-width:400px;width:100%;text-align:center;transform:scale(.9);transition:transform .3s;}
+.modal-overlay.open .modal{transform:scale(1);}
+.modal-icon{font-size:50px;margin-bottom:12px;}
+.modal-title{font-family:'Amiri',serif;font-size:22px;margin-bottom:8px;}
+.modal-body{font-size:14px;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;}
+.modal-btn{background:linear-gradient(135deg,var(--emerald),var(--emerald-light));color:#fff;border:none;padding:12px 32px;border-radius:30px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+
+/* ===== ADMIN ===== */
+.adm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1500;display:flex;opacity:0;pointer-events:none;transition:opacity .3s;}
+.adm-overlay.open{opacity:1;pointer-events:all;}
+.adm-panel{background:var(--ab);width:min(720px,100%);overflow-y:auto;transform:translateX(-60px);opacity:0;transition:transform .35s,opacity .35s;}
+.adm-overlay.open .adm-panel{transform:translateX(0);opacity:1;}
+.adm-scrim{flex:1;}
+.adm-hdr{background:linear-gradient(135deg,#1a3a5c,#0d2035);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--abr);position:sticky;top:0;z-index:10;}
+.adm-title{font-family:'Amiri',serif;font-size:20px;color:var(--gold-light);}
+.adm-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;}
+.adm-tabs{display:flex;border-bottom:1px solid var(--abr);overflow-x:auto;}
+.adm-tab{padding:12px 18px;color:rgba(255,255,255,.45);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;}
+.adm-tab.active{color:var(--gold-light);border-bottom-color:var(--gold);}
+.adm-tab:hover:not(.active){color:rgba(255,255,255,.75);}
+.adm-body{padding:20px 22px;}
+.adm-sec{display:none;}
+.adm-sec.active{display:block;}
+.adm-card{background:var(--ac);border:1px solid var(--abr);border-radius:14px;padding:16px;margin-bottom:14px;}
+.adm-card-title{color:var(--gold-light);font-size:13px;font-weight:700;margin-bottom:12px;}
+.adm-tbl{width:100%;border-collapse:collapse;}
+.adm-tbl th{color:rgba(255,255,255,.35);font-size:11px;font-weight:700;text-align:right;padding:6px 8px;border-bottom:1px solid var(--abr);}
+.adm-tbl td{color:rgba(255,255,255,.85);font-size:13px;padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.adm-tbl tr:last-child td{border-bottom:none;}
+.adm-inp{background:rgba(255,255,255,.08);border:1px solid var(--abr);color:#fff;padding:7px 11px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:13px;outline:none;text-align:right;width:100%;transition:border-color .2s;}
+.adm-inp:focus{border-color:var(--gold);}
+select.adm-inp option{background:#1A2736;color:#fff;}
+.adm-btn{padding:7px 13px;border-radius:8px;border:none;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px;}
+.btn-g{background:rgba(45,155,111,.2);color:#4CAF7D;border:1px solid rgba(45,155,111,.3);}
+.btn-g:hover{background:rgba(45,155,111,.35);}
+.btn-r{background:rgba(192,57,43,.2);color:#E07070;border:1px solid rgba(192,57,43,.3);}
+.btn-r:hover{background:rgba(192,57,43,.35);}
+.btn-y{background:rgba(200,151,43,.2);color:var(--gold-light);border:1px solid rgba(200,151,43,.3);}
+.btn-y:hover{background:rgba(200,151,43,.35);}
+.btn-b{background:rgba(43,122,171,.2);color:#7BB8E8;border:1px solid rgba(43,122,171,.3);}
+.btn-b:hover{background:rgba(43,122,171,.35);}
+.adm-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;}
+.adm-ch-row{display:flex;align-items:center;gap:7px;padding:8px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:6px;}
+.adm-hr{border:none;border-top:1px solid var(--abr);margin:14px 0;}
+.stats-g{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.stat-box{background:rgba(255,255,255,.05);border-radius:10px;padding:12px;text-align:center;}
+.stat-v{font-family:'Amiri',serif;font-size:28px;color:var(--gold-light);font-weight:700;}
+.stat-l{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
+.pts-adj{display:flex;align-items:center;gap:6px;}
+.pts-adj button{width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;}
+.pts-adj button:hover{background:rgba(255,255,255,.18);}
+.pts-adj span{color:#fff;font-weight:700;min-width:36px;text-align:center;font-size:14px;}
+.quiz-item{background:rgba(255,255,255,.04);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid var(--abr);}
+.quiz-item-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.quiz-item-q{color:#fff;font-size:13px;font-weight:600;flex:1;}
+.quiz-item-opts{color:rgba(255,255,255,.45);font-size:11px;line-height:1.8;}
+.pwd-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 30px;gap:16px;text-align:center;}
+.pwd-h{font-family:'Amiri',serif;font-size:26px;color:var(--gold-light);}
+.pwd-p{color:rgba(255,255,255,.45);font-size:13px;}
+.pwd-inp{background:rgba(255,255,255,.08);border:2px solid var(--abr);color:#fff;padding:12px 20px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:16px;outline:none;text-align:center;width:100%;max-width:240px;letter-spacing:4px;transition:border-color .2s;}
+.pwd-inp:focus{border-color:var(--gold);}
+.pwd-btn-main{background:linear-gradient(135deg,var(--gold),#E8A020);color:#fff;border:none;padding:12px 32px;border-radius:30px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:240px;}
+.pwd-err{color:#E07070;font-size:13px;display:none;}
+.pwd-err.show{display:block;}
+.emoji-pick{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.ep{font-size:20px;cursor:pointer;padding:4px 6px;border-radius:8px;border:2px solid transparent;transition:all .2s;}
+.ep:hover,.ep.s{border-color:var(--gold);background:rgba(200,151,43,.15);}
+.tap-pulse{animation:tapPulse .15s ease;}
+@keyframes tapPulse{0%{transform:scale(1);}50%{transform:scale(.88);}100%{transform:scale(1);}}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div class="header-inner">
+    <button class="admin-header-btn" onclick="openAdmin()">⚙️ لوحة الإدارة</button>
+    <div id="syncStatus" style="position:absolute;left:20px;bottom:8px;font-size:11px;color:rgba(255,255,255,.5);font-weight:600;transition:opacity .3s;"></div>
+    <div class="header-badge">✦ عشر ذي الحجة المباركة ✦</div>
+    <h1>تحدي <span>العائلة</span> المبارك 🌙</h1>
+    <p>نتنافس معاً في الطاعة ونتعاون على الخير</p>
+    <div class="day-strip" id="dayStrip"></div>
+  </div>
+</header>
+<div class="main">
+  <!-- MEMBER + SCORE -->
+  <div class="card full" style="animation-delay:.05s">
+    <div class="card-title"><span class="icon icon-gold">👤</span>سجّل إنجازات اليوم باسمك</div>
+    <div class="mem-tabs" id="memTabs"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:130px;">
+        <div style="font-size:12px;font-weight:700;color:var(--ink-soft);letter-spacing:1px;">مجموع نقاطك</div>
+        <div id="totalScoreNum" style="font-family:'Amiri',serif;font-size:58px;font-weight:700;color:var(--gold);line-height:1;">0</div>
+        <div style="font-size:12px;color:var(--ink-soft);">نقطة</div>
+        <div id="totalScoreRank" style="font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;background:var(--emerald-pale);color:var(--emerald);margin-top:2px;"></div>
+      </div>
+      <div style="flex:1;min-width:180px;">
+        <div style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">إضافة فرد جديد</div>
+        <div class="add-form">
+          <input type="text" id="newMemInput" placeholder="اسم الفرد..." maxlength="12">
+          <button onclick="addMember()">+ إضافة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CHALLENGES -->
+  <div class="card" style="animation-delay:.1s">
+    <div class="card-title"><span class="icon icon-gold">⭐</span>تحديات اليوم</div>
+    <div class="challenge-list" id="challengeList"></div>
+  </div>
+  <!-- TODAY LEADERBOARD -->
+  <div class="card" style="animation-delay:.15s">
+    <div class="card-title"><span class="icon icon-sky">📅</span>ترتيب اليوم</div>
+    <div id="todayPodium"></div>
+  </div>
+  <!-- TOTAL LEADERBOARD -->
+  <div class="card" style="animation-delay:.17s">
+    <div class="card-title"><span class="icon icon-gold">🏆</span>الترتيب الكلي</div>
+    <div class="podium" id="podium"></div>
+    <div class="leaderboard-rest" id="lbRest"></div>
+  </div>
+  <!-- QUIZ -->
+  <div class="card" style="animation-delay:.2s">
+    <div class="card-title" style="justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:8px;"><span class="icon icon-sky">❓</span>مسابقة دينية</div>
+      <div id="quizPtsBadge" style="background:var(--gold-pale);border:1.5px solid var(--gold);color:var(--gold);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;display:none;">+10 نقطة</div>
+    </div>
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="quiz-opts" id="quizOpts"></div>
+    <div class="quiz-fb" id="quizFb"></div>
+    <button class="nxt-btn" id="nxtBtn" onclick="nextQuiz()">السؤال التالي ←</button>
+  </div>
+  <!-- WHEEL -->
+  <div class="card" style="animation-delay:.25s">
+    <div class="card-title"><span class="icon icon-rose">🎡</span>عجلة الجوائز</div>
+    <div class="wheel-wrap">
+      <div class="wheel-container"><div class="wheel-ptr">▼</div><canvas id="wheelCanvas" width="200" height="200"></canvas></div>
+      <button class="spin-btn" id="spinBtn" onclick="doSpin()">🎰 أدر العجلة!</button>
+      <div class="spin-res" id="spinRes"></div>
+    </div>
+  </div>
+  <!-- QURAN COUNTER -->
+  <div class="card full" style="animation-delay:.28s">
+    <div class="card-title"><span class="icon icon-green">📖</span>عداد أوجه القرآن <span style="font-size:12px;color:var(--ink-soft);font-weight:400;margin-right:4px;">— كل وجه = 5 نقاط</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div id="quranCount" style="font-family:'Amiri',serif;font-size:64px;font-weight:700;color:var(--emerald);line-height:1;">0</div>
+        <div style="font-size:13px;color:var(--ink-soft);">وجه قرأته اليوم</div>
+        <div id="quranPts" style="font-size:13px;font-weight:700;color:var(--gold);">0 نقطة</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
+        <button id="quranBtn" onclick="tapQuran()"
+          style="width:110px;height:110px;border-radius:50%;border:4px solid var(--emerald);background:var(--emerald-pale);font-size:40px;cursor:pointer;transition:transform .1s,background .1s;box-shadow:0 4px 20px rgba(26,107,74,.2);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;user-select:none;">
+          📖
+        </button>
+        <div style="font-size:11px;color:var(--ink-soft);text-align:center;">اضغط كل ما قرأت وجهاً</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:120px;">
+        <div style="font-size:12px;color:var(--ink-soft);font-weight:600;">الإجمالي خلال العشر</div>
+        <div id="quranTotal" style="font-family:'Amiri',serif;font-size:28px;color:var(--emerald);font-weight:700;">0 وجه</div>
+        <button onclick="resetQuranToday()" style="padding:6px 12px;border-radius:10px;border:1px solid #ddd;background:#fff;font-family:'Tajawal',sans-serif;font-size:12px;color:var(--ink-soft);cursor:pointer;">↩ إعادة اليوم</button>
+      </div>
+    </div>
+  </div>
+  <!-- DHIKR COUNTER -->
+  <div class="card full" style="animation-delay:.29s">
+    <div class="card-title"><span class="icon icon-gold">📿</span>عداد الذكر <span style="font-size:12px;color:var(--ink-soft);font-weight:400;margin-right:4px;">— كل 100 ذكر = 5 نقاط</span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div id="dhikrCount" style="font-family:'Amiri',serif;font-size:64px;font-weight:700;color:var(--gold);line-height:1;">0</div>
+        <div style="font-size:13px;color:var(--ink-soft);">ذكر في هذه الجلسة</div>
+        <!-- progress to next 100 -->
+        <div style="width:100%;max-width:160px;margin-top:6px;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-bottom:4px;">
+            <span id="dhikrProg">0/100</span>
+            <span id="dhikrRounds" style="color:var(--gold);font-weight:700;">0 مئة</span>
+          </div>
+          <div style="height:7px;border-radius:4px;background:#eee;overflow:hidden;">
+            <div id="dhikrBar" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),#E8C840);width:0%;transition:width .2s;"></div>
+          </div>
+        </div>
+        <div id="dhikrPts" style="font-size:13px;font-weight:700;color:var(--gold);margin-top:4px;">0 نقطة</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
+        <button id="dhikrBtn" onclick="tapDhikr()"
+          style="width:120px;height:120px;border-radius:50%;border:4px solid var(--gold);background:var(--gold-pale);font-size:44px;cursor:pointer;transition:transform .1s,background .1s;box-shadow:0 4px 20px rgba(200,151,43,.25);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;user-select:none;">
+          📿
+        </button>
+        <div style="font-size:11px;color:var(--ink-soft);text-align:center;">اضغط لكل ذكر</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:120px;">
+        <div style="font-size:12px;color:var(--ink-soft);font-weight:600;">مجموع الأذكار اليوم</div>
+        <div id="dhikrTotal" style="font-family:'Amiri',serif;font-size:28px;color:var(--gold);font-weight:700;">0 ذكر</div>
+        <div id="dhikrTotalPts" style="font-size:12px;color:var(--ink-soft);">0 نقطة مكتسبة</div>
+        <button onclick="resetDhikrSession()" style="padding:6px 12px;border-radius:10px;border:1px solid #ddd;background:#fff;font-family:'Tajawal',sans-serif;font-size:12px;color:var(--ink-soft);cursor:pointer;">↩ إعادة الجلسة</button>
+      </div>
+    </div>
+  </div>
+  <div class="card rem-card" style="animation-delay:.3s">
+    <div class="card-title"><span class="icon" style="background:rgba(200,151,43,.2)">🌙</span>تذكيرات العشر المباركة</div>
+    <div class="rem-list" id="remList"></div>
+  </div>
+  <!-- ACHIEVEMENTS -->
+  <div class="card" style="animation-delay:.35s">
+    <div class="card-title"><span class="icon icon-gold">🎖️</span>الإنجازات</div>
+    <div class="ach-grid" id="achGrid"></div>
+  </div>
+  <!-- ACTIVITY LOG -->
+  <div class="card full" style="animation-delay:.38s">
+    <div class="card-title" style="justify-content:space-between;">
+      <div><span class="icon icon-sky">📜</span>آخر الإنجازات</div>
+      <button onclick="clearLog()" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:11px;cursor:pointer;font-family:'Tajawal',sans-serif;">مسح الكل</button>
+    </div>
+    <div id="activityLog" style="display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;"></div>
+    <div id="activityEmpty" style="color:rgba(255,255,255,.3);font-size:13px;text-align:center;padding:16px;display:none;">لا توجد إنجازات بعد 🌙</div>
+  </div>
+  <!-- MY PROFILE BTN -->
+  <div class="card full" style="animation-delay:.39s;text-align:center;padding:16px;">
+    <button onclick="openProfile()" style="background:linear-gradient(135deg,rgba(200,151,43,.2),rgba(200,151,43,.1));border:1.5px solid rgba(200,151,43,.4);color:var(--gold-light);padding:14px 32px;border-radius:16px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;width:100%;">📊 صفحتي الشخصية</button>
+  </div>
+  <!-- COUNTDOWN -->
+  <div class="card full" style="animation-delay:.4s;text-align:center">
+    <div class="card-title" style="justify-content:center"><span class="icon icon-green">🕋</span>العد التنازلي ليوم عرفة (9 ذي الحجة)</div>
+    <div class="hajj-cd" id="hajjCd"></div>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal-overlay" id="modalOv">
+  <div class="modal">
+    <div class="modal-icon" id="mIcon"></div>
+    <div class="modal-title" id="mTitle"></div>
+    <div class="modal-body" id="mBody"></div>
+    <button class="modal-btn" onclick="closeModal()">ماشاء الله! 🌟</button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="adm-overlay" id="admOv">
+  <div class="adm-panel" id="admPanel">
+    <!-- PWD -->
+    <div id="pwdWrap">
+      <div class="adm-hdr"><div class="adm-title">🔐 لوحة الإدارة</div><button class="adm-close" onclick="closeAdmin()">✕</button></div>
+      <div class="pwd-screen">
+        <div style="font-size:50px">⚙️</div>
+        <div class="pwd-h">لوحة التحكم</div>
+        <div class="pwd-p">أدخل كلمة المرور للدخول</div>
+        <input class="pwd-inp" type="password" id="pwdInp" placeholder="••••" maxlength="20" onkeydown="if(event.key==='Enter')tryLogin()">
+        <div class="pwd-err" id="pwdErr">❌ كلمة المرور غير صحيحة</div>
+        <button class="pwd-btn-main" onclick="tryLogin()">دخول →</button>
+        <div style="color:rgba(255,255,255,.2);font-size:12px;margin-top:6px;">الافتراضية: 1234</div>
+      </div>
+    </div>
+    <!-- CONTENT -->
+    <div id="admContent" style="display:none;">
+      <div class="adm-hdr">
+        <div class="adm-title">⚙️ لوحة الإدارة</div>
+        <div style="display:flex;gap:8px;">
+          <button class="adm-btn btn-r" onclick="doLogout()" style="font-size:12px;">خروج 🚪</button>
+          <button class="adm-close" onclick="closeAdmin()">✕</button>
+        </div>
+      </div>
+      <div class="adm-tabs">
+        <div class="adm-tab active" onclick="swTab('stats',this)">📊 إحصائيات</div>
+        <div class="adm-tab" onclick="swTab('members',this)">👥 الأعضاء</div>
+        <div class="adm-tab" onclick="swTab('challenges',this)">⭐ التحديات</div>
+        <div class="adm-tab" onclick="swTab('quizzes',this)">❓ الأسئلة</div>
+        <div class="adm-tab" onclick="swTab('daily',this)">📋 إنجازات اليوم</div>
+        <div class="adm-tab" onclick="swTab('wheel',this)">🎡 العجلة</div>
+        <div class="adm-tab" onclick="swTab('settings',this)">🔧 الإعدادات</div>
+      </div>
+      <div class="adm-body">
+        <!-- STATS -->
+        <div class="adm-sec active" id="as-stats">
+          <div class="adm-card"><div class="adm-card-title">📊 إحصائيات عامة</div><div class="stats-g" id="statsG"></div></div>
+          <div class="adm-card"><div class="adm-card-title">🏆 تفاصيل الأعضاء</div><table class="adm-tbl" id="statsTbl"></table></div>
+        </div>
+        <!-- MEMBERS -->
+        <div class="adm-sec" id="as-members">
+          <div class="adm-card">
+            <div class="adm-card-title">👥 إدارة الأعضاء</div>
+            <p style="color:rgba(255,255,255,.4);font-size:11px;margin-bottom:10px;">الرمز السري هو ما يدخله العضو لتسجيل الدخول</p>
+            <table class="adm-tbl"><thead><tr><th>الاسم</th><th>الإيموجي</th><th>🔑 الرمز</th><th>النقاط</th><th>مكافأة</th><th>حذف</th></tr></thead><tbody id="memTbl"></tbody></table>
+            <hr class="adm-hr">
+            <div class="adm-card-title">➕ إضافة عضو جديد</div>
+            <div class="adm-row">
+              <input class="adm-inp" style="flex:1;" type="text" id="admNewName" placeholder="اسم العضو...">
+              <input class="adm-inp" style="width:80px;letter-spacing:2px;text-align:center;" type="text" id="admNewPin" maxlength="6" placeholder="رمز...">
+              <button class="adm-btn btn-g" onclick="admAddMember()">+ إضافة</button>
+            </div>
+            <div class="emoji-pick" id="emojiPick"></div>
+          </div>
+        </div>
+        <!-- CHALLENGES -->
+        <div class="adm-sec" id="as-challenges">
+          <div class="adm-card">
+            <div class="adm-card-title">⭐ التحديات الحالية (اضغط للتعديل)</div>
+            <div id="admChList"></div>
+            <hr class="adm-hr">
+            <div class="adm-card-title">➕ إضافة تحدي جديد</div>
+            <div class="adm-row">
+              <input class="adm-inp" style="flex:2;" id="newChName" placeholder="اسم التحدي...">
+              <input class="adm-inp" style="width:50px;text-align:center;" id="newChEmoji" placeholder="⭐">
+              <input class="adm-inp" style="width:75px;" type="number" id="newChPts" placeholder="نقاط" min="1">
+              <button class="adm-btn btn-g" onclick="admAddChallenge()">+ إضافة</button>
+            </div>
+          </div>
+        </div>
+        <!-- QUIZZES -->
+        <div class="adm-sec" id="as-quizzes">
+          <div class="adm-card">
+            <div class="adm-card-title">❓ الأسئلة الحالية</div>
+            <div id="admQzList"></div>
+            <hr class="adm-hr">
+            <div class="adm-card-title">➕ إضافة سؤال جديد</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <input class="adm-inp" id="nqQ" placeholder="نص السؤال...">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+                <input class="adm-inp" id="nqO0" placeholder="أ - الخيار الأول">
+                <input class="adm-inp" id="nqO1" placeholder="ب - الخيار الثاني">
+                <input class="adm-inp" id="nqO2" placeholder="ج - الخيار الثالث (اختياري)">
+                <input class="adm-inp" id="nqO3" placeholder="د - الخيار الرابع (اختياري)">
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <label style="color:rgba(255,255,255,.55);font-size:13px;">الإجابة الصحيحة:</label>
+                <select class="adm-inp" style="width:auto;" id="nqAns">
+                  <option value="0">أ</option><option value="1">ب</option><option value="2">ج</option><option value="3">د</option>
+                </select>
+              </div>
+              <input class="adm-inp" id="nqExp" placeholder="شرح الإجابة (اختياري)...">
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <label style="color:rgba(255,255,255,.55);font-size:13px;">نقاط الإجابة الصحيحة:</label>
+                <input class="adm-inp" style="width:90px;" type="number" id="nqPts" placeholder="10" min="1" value="10">
+              </div>
+              <button class="adm-btn btn-g" onclick="admAddQuiz()" style="align-self:flex-start;">+ إضافة السؤال</button>
+            </div>
+          </div>
+        </div>
+        <!-- DAILY ACHIEVEMENTS -->
+        <div class="adm-sec" id="as-daily">
+          <div class="adm-card">
+            <div class="adm-card-title">📋 إنجازات اليوم <span id="dailyDayLabel" style="font-size:13px;font-weight:400;color:rgba(255,255,255,.4);"></span></div>
+            <div id="dailyAchGrid" style="display:flex;flex-direction:column;gap:12px;"></div>
+          </div>
+        </div>
+        <!-- WHEEL ADMIN -->
+        <div class="adm-sec" id="as-wheel">
+          <div class="adm-card">
+            <div class="adm-card-title">🎡 من يحق له استخدام عجلة الجوائز؟</div>
+            <p style="color:rgba(255,255,255,.4);font-size:12px;margin-bottom:12px;">اختر الأشخاص المسموح لهم بتدوير العجلة. إذا لم يُختر أحد، الكل مسموح لهم.</p>
+            <div id="wheelPermList" style="display:flex;flex-direction:column;gap:8px;"></div>
+            <hr class="adm-hr">
+            <div class="adm-row">
+              <button class="adm-btn btn-g" onclick="setWheelAll(true)">✅ السماح للجميع</button>
+              <button class="adm-btn btn-r" onclick="setWheelAll(false)">🚫 منع الجميع</button>
+            </div>
+          </div>
+          <div class="adm-card">
+            <div class="adm-card-title">🎰 عدد الإدارات المسموح بها</div>
+            <p style="color:rgba(255,255,255,.4);font-size:12px;margin-bottom:10px;">حدد عدد مرات التدوير لكل شخص (0 = غير محدود)</p>
+            <div id="wheelSpinLimitList" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+        <!-- SETTINGS -->
+        <div class="adm-sec" id="as-settings">
+          <div class="adm-card">
+            <div class="adm-card-title">📅 اليوم الحالي للتحدي</div>
+            <div class="adm-row">
+              <input class="adm-inp" style="width:100px;" type="number" id="admDay" min="1" max="10" placeholder="1-10">
+              <button class="adm-btn btn-b" onclick="admSetDay()">✔ تعيين</button>
+            </div>
+          </div>
+          <div class="adm-card">
+            <div class="adm-card-title">🔑 تغيير كلمة المرور</div>
+            <div class="adm-row">
+              <input class="adm-inp" style="flex:1;" type="password" id="newPwdF" placeholder="كلمة المرور الجديدة...">
+              <button class="adm-btn btn-y" onclick="changePwd()">💾 حفظ</button>
+            </div>
+          </div>
+          <div class="adm-card">
+            <div class="adm-card-title">🔄 إعادة الضبط</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="adm-btn btn-r" onclick="resetAll()">⚠️ حذف كل البيانات</button>
+              <button class="adm-btn btn-y" onclick="resetScores()">🗑️ مسح النقاط فقط</button>
+            </div>
+            <p style="color:rgba(255,255,255,.3);font-size:12px;margin-top:8px;">⚠️ لا يمكن التراجع عن هذه العملية</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="adm-scrim" onclick="closeAdmin()"></div>
+</div>
+
+<script>
+// ===== DEFAULTS =====
+// wheelPerms: object {memberIndex: true/false} — undefined means allowed
+// wheelSpinLimit: object {memberIndex: number} — 0 or undefined means unlimited
+// wheelSpinUsed: object {memberIndex: number}
+
+const DEF_CHALLENGES=[
+  {id:'prayer',name:'صلاة الفجر في وقتها',emoji:'🌅',pts:30},
+  {id:'quran',name:'ورد قرآني (ربع حزب)',emoji:'📖',pts:25},
+  {id:'takbeer',name:'التكبير والأذكار',emoji:'📿',pts:15},
+  {id:'fasting',name:'صيام اليوم',emoji:'🌙',pts:40},
+  {id:'sadaqa',name:'الصدقة اليوم',emoji:'💝',pts:20},
+  {id:'thikr',name:'أذكار الصباح والمساء',emoji:'☀️',pts:15},
+  {id:'family',name:'صلاة جماعية مع العائلة',emoji:'🤲',pts:20},
+];
+const DEF_QUIZZES=[
+  {q:'ما هو أفضل الأيام عند الله؟',opts:['العشر من ذي الحجة','رمضان','يوم الجمعة','يوم عرفة'],ans:0,exp:'قال النبي ﷺ: ما من أيام العمل الصالح فيها أحب إلى الله من هذه الأيام.'},
+  {q:'ماذا يستحب فعله في يوم عرفة لغير الحاج؟',opts:['الصيام','الحج','العمرة','الاعتكاف'],ans:0,exp:'صيام يوم عرفة يُكفّر سنتين.'},
+  {q:'ما أفضل ما يُقال في عشر ذي الحجة؟',opts:['التكبير والتهليل والتحميد','قراءة البقرة','الاستغفار فقط','قراءة الكهف'],ans:0,exp:'التكبير والتهليل والتحميد من أفضل الأعمال.'},
+  {q:'متى يبدأ وقت الأضحية؟',opts:['بعد صلاة العيد','بعد الفجر','بعد الظهر','قبل صلاة العيد'],ans:0,exp:'تبدأ بعد صلاة عيد الأضحى.'},
+  {q:'كم عدد أيام التشريق؟',opts:['3 أيام','2 يوم','4 أيام','5 أيام'],ans:0,exp:'أيام التشريق: 11 و12 و13 ذي الحجة.'},
+  {q:'ما فضل صيام يوم عرفة؟',opts:['يكفّر سنتين','يكفّر سنة','يضاعف الأجر 10 أضعاف','يكافئ حجة'],ans:0,exp:'صيام يوم عرفة يكفّر السنة الماضية والقادمة.'},
+  {q:'ما التكبير الذي لا يتقيد بأدبار الصلوات؟',opts:['التكبير المطلق','التكبير المقيّد','الأذان','الإقامة'],ans:0,exp:'التكبير المطلق يُشرع في عشر ذي الحجة في كل وقت.'},
+];
+const WHEEL=[
+  {label:'🌟 +20 نقطة',pts:20},{label:'📿 +10 نقاط',pts:10},{label:'💎 +50 نقطة!',pts:50},
+  {label:'🏆 لقب البطل',pts:0},{label:'⭐ +15 نقطة',pts:15},{label:'🎁 +30 نقطة',pts:30},
+  {label:'🌙 +25 نقطة',pts:25},{label:'🍀 حظ سعيد!',pts:5},
+];
+const ACHS=[
+  {id:'a1',icon:'🌱',name:'البداية',fn:m=>m.totalChecks>=1},
+  {id:'a2',icon:'🔥',name:'3 أيام',fn:m=>m.streak>=3},
+  {id:'a3',icon:'🌙',name:'الصائم',fn:m=>m.fastingDays>=1},
+  {id:'a4',icon:'📖',name:'قارئ القرآن',fn:m=>m.quranDays>=3},
+  {id:'a5',icon:'💝',name:'المتصدق',fn:m=>m.sadaqaDays>=2},
+  {id:'a6',icon:'⭐',name:'يوم كامل',fn:m=>m.fullDays>=1},
+  {id:'a7',icon:'🏆',name:'المتصدر',fn:m=>m.isTop},
+  {id:'a8',icon:'🤲',name:'جمع الشمل',fn:m=>m.familyDays>=2},
+];
+const REMS=['إكثار التكبير والتهليل والتحميد والتسبيح','صيام يوم عرفة (9 ذي الحجة) - يُكفّر سنتين','الإكثار من الدعاء في يوم عرفة','أداء صلاة الفجر في وقتها جماعةً','قراءة ورد يومي من القرآن الكريم','التصدق ولو بالقليل في كل يوم'];
+const EMOJIS=['😊','👦','👧','👨','👩','🧔','👴','👵','🧒','🧑','👶','🦸'];
+const WCOLS=['#C8972B','#1A6B4A','#2B7AAB','#C0392B','#8E44AD','#E67E22','#16A085','#D35400'];
+
+// ===== STATE =====
+let S=JSON.parse(localStorage.getItem('dh2')||'null')||{
+  day:1,mem:0,
+  members:[
+    {name:'أبو العائلة',emoji:'👨',pin:'111',checks:{},streak:0,totalChecks:0,fastingDays:0,quranDays:0,sadaqaDays:0,fullDays:0,familyDays:0},
+    {name:'أم العائلة',emoji:'👩',pin:'222',checks:{},streak:0,totalChecks:0,fastingDays:0,quranDays:0,sadaqaDays:0,fullDays:0,familyDays:0},
+    {name:'الابن',emoji:'👦',pin:'333',checks:{},streak:0,totalChecks:0,fastingDays:0,quranDays:0,sadaqaDays:0,fullDays:0,familyDays:0},
+  ],
+  challenges:DEF_CHALLENGES,
+  quizzes:DEF_QUIZZES,
+  qi:0,pwd:'1234',bonus:{},wheelPerms:{},wheelSpinLimit:{},wheelSpinUsed:{},activityLog:[],
+};
+if(!S.challenges)S.challenges=DEF_CHALLENGES;
+if(!S.quizzes)S.quizzes=DEF_QUIZZES;
+if(!S.bonus)S.bonus={};
+if(!S.pwd)S.pwd='1234';
+if(!S.wheelPerms)S.wheelPerms={};
+if(!S.wheelSpinLimit)S.wheelSpinLimit={};
+if(!S.wheelSpinUsed)S.wheelSpinUsed={};
+
+// ===== FIREBASE SYNC =====
+let _db=null,_unsubscribe=null,_savePending=false,_ignoreNext=false;
+
+function initFirebase(){
+  try{
+    const app=firebase.initializeApp({
+      apiKey:"AIzaSyCnzNv1cWyl5Zgv2Hyl61zj0Qn6H5J9uwc",
+      authDomain:"de-haj.firebaseapp.com",
+      projectId:"de-haj",
+      storageBucket:"de-haj.firebasestorage.app",
+      messagingSenderId:"516255111169",
+      appId:"1:516255111169:web:891e2038e137b57d5fc800"
+    });
+    _db=firebase.firestore(app);
+    setSyncStatus('⏳ جاري الاتصال...');
+    // Real-time listener — fires instantly on any device change
+    _unsubscribe=_db.collection('family').doc('state').onSnapshot(snap=>{
+      if(_ignoreNext){_ignoreNext=false;return;}
+      if(snap.exists){
+        const remote=snap.data();
+        if(remote&&remote.json){
+          const parsed=JSON.parse(remote.json);
+          const localMem=S.mem;
+          S=parsed;
+          S.mem=Math.min(localMem,Math.max(0,S.members.length-1));
+          fixState();
+          localStorage.setItem('dh2',JSON.stringify(S));
+          render();
+          setSyncStatus('🔄 متزامن');
+          // لو شاشة الدخول مفتوحة، حدّث القائمة
+          if(document.getElementById('loginOverlay').style.display!=='none'){
+            showLogin();
+          }
+          // أبلّغ INIT إن Firebase جاهز
+          if(window._firebaseReady){window._firebaseReady();window._firebaseReady=null;}
+        }
+      } else {
+        // First run — push current state
+        pushToFirebase();
+      }
+    },err=>{
+      console.warn('Firebase listener error',err);
+      setSyncStatus('📴 وضع محلي');
+      if(window._firebaseReady){window._firebaseReady();window._firebaseReady=null;}
+    });
+  }catch(e){
+    console.warn('Firebase init error',e);
+    setSyncStatus('📴 وضع محلي');
+  }
+}
+
+function pushToFirebase(){
+  if(!_db)return;
+  clearTimeout(save._t);
+  save._t=setTimeout(async()=>{
+    try{
+      _ignoreNext=true;
+      await _db.collection('family').doc('state').set({json:JSON.stringify(S),ts:Date.now()});
+      setSyncStatus('✅ محفوظ');
+    }catch(e){
+      _ignoreNext=false;
+      setSyncStatus('⚠️ خطأ في الحفظ');
+    }
+  },600);
+}
+
+function fixState(){
+  if(!S.wheelPerms)S.wheelPerms={};
+  if(!S.wheelSpinLimit)S.wheelSpinLimit={};
+  if(!S.wheelSpinUsed)S.wheelSpinUsed={};
+  if(!S.bonus)S.bonus={};
+  if(!S.challenges)S.challenges=DEF_CHALLENGES;
+  if(!S.quizzes)S.quizzes=DEF_QUIZZES;
+  if(!S.pwd)S.pwd='1234';
+  if(!S.quranCounter)S.quranCounter={};
+  if(!S.dhikrCounter)S.dhikrCounter={};
+  if(!S.activityLog)S.activityLog=[];
+  // ensure all members have pin
+  S.members.forEach(m=>{if(!m.pin)m.pin='000';});
+}
+
+function save(){
+  localStorage.setItem('dh2',JSON.stringify(S));
+  setSyncStatus('💾 جاري الحفظ...');
+  pushToFirebase();
+}
+
+function setSyncStatus(msg){
+  const el=document.getElementById('syncStatus');
+  if(el){el.textContent=msg;clearTimeout(el._st);el._st=setTimeout(()=>{if(el.textContent===msg)el.textContent='🟢 متصل';},3000);}
+}
+
+const cur=()=>S.members[S.mem];
+const dk=d=>`d${d}`;
+const dayChecks=(m,d)=>m.checks[dk(d)]||{};
+
+function totalPts(m,i){
+  let t=0;
+  // نقاط التحديات والكويز
+  for(const dc of Object.values(m.checks))
+    for(const [id,val] of Object.entries(dc))
+      if(val){
+        const ch=S.challenges.find(c=>c.id===id);
+        if(ch) t+=ch.pts;
+        else if(id.startsWith('qz_')) t+=typeof val==='number'?val:10;
+      }
+  // نقاط القرآن: كل أوجه العضو في كل الأيام × 5
+  if(S.quranCounter){
+    Object.entries(S.quranCounter)
+      .filter(([k])=>k.startsWith('qr_'+i+'_'))
+      .forEach(([,v])=>{ t+=(v.pages||0)*5; });
+  }
+  // نقاط الذكر: كل مئات العضو في كل الأيام × 5
+  if(S.dhikrCounter){
+    Object.entries(S.dhikrCounter)
+      .filter(([k])=>k.startsWith('dk_'+i+'_'))
+      .forEach(([,v])=>{ t+=(v.rounds||0)*5; });
+  }
+  // مكافآت يدوية من الإدارة
+  if(i!==undefined&&S.bonus[i])t+=S.bonus[i];
+  return Math.max(0,t);
+}
+
+// ===== RENDER =====
+function render(){
+  renderDays();renderTabs();renderChallenges();renderLeaderboard();renderScore();renderRems();renderAchs();renderWheelStatus();
+  renderQuranCounter();renderDhikrCounter();
+}
+
+function renderDays(){
+  const el=document.getElementById('dayStrip');el.innerHTML='';
+  for(let d=1;d<=10;d++){
+    const p=document.createElement('div');
+    p.className='day-pill'+(d<S.day?' done':'')+(d===S.day?' active':'');
+    p.textContent=d;p.onclick=()=>{S.day=d;save();render();};
+    el.appendChild(p);
+  }
+}
+
+function renderTabs(){
+  const el=document.getElementById('memTabs');el.innerHTML='';
+  const m=cur();
+  // Show current logged-in member with switch button
+  const wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
+  wrap.innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="font-size:36px;">${m.emoji}</div>
+      <div>
+        <div style="font-weight:700;color:#fff;font-size:16px;">${m.name}</div>
+        <div style="font-size:12px;color:var(--gold-light);">مرحباً بك 👋</div>
+      </div>
+    </div>
+    <button onclick="showLogin()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:8px 16px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:13px;cursor:pointer;">تبديل الحساب ↔</button>`;
+  el.appendChild(wrap);
+}
+
+function renderChallenges(){
+  const el=document.getElementById('challengeList');
+  const m=cur(),checks=dayChecks(m,S.day);
+  el.innerHTML='';
+  S.challenges.forEach(ch=>{
+    const done=!!checks[ch.id];
+    const item=document.createElement('div');
+    item.className='challenge-item'+(done?' checked':'');
+    item.innerHTML=`<div class="chk-box">${done?'✓':''}</div><span style="font-size:22px">${ch.emoji}</span><div class="ch-info"><div class="ch-name">${ch.name}</div><div class="ch-pts">+${ch.pts} نقطة</div></div>`;
+    item.onclick=()=>toggleCh(ch.id);
+    el.appendChild(item);
+  });
+}
+
+function toggleCh(id){
+  const m=cur();const key=dk(S.day);
+  if(!m.checks[key])m.checks[key]={};
+  const ch=S.challenges.find(c=>c.id===id);
+  const was=!!m.checks[key][id];
+  m.checks[key][id]=!was;
+  updStats(m);render();
+  if(!was){showToast(`✨ +${ch.pts} نقطة! ${ch.emoji}`);logActivity(ch.emoji,`أكمل تحدي "${ch.name}"`,ch.pts);save();renderActivityLog();checkAchs();}
+  else{save();}
+}
+
+function updStats(m){
+  m.totalChecks=Object.values(m.checks).reduce((a,d)=>a+Object.values(d).filter(Boolean).length,0);
+  m.fastingDays=Object.values(m.checks).filter(d=>d.fasting).length;
+  m.quranDays=Object.values(m.checks).filter(d=>d.quran).length;
+  m.sadaqaDays=Object.values(m.checks).filter(d=>d.sadaqa).length;
+  m.familyDays=Object.values(m.checks).filter(d=>d.family).length;
+  m.fullDays=Object.values(m.checks).filter(d=>S.challenges.every(c=>d[c.id])).length;
+}
+
+function dayPts(m,i,day){
+  const checks=dayChecks(m,day);
+  let t=0;
+  for(const [id,val] of Object.entries(checks))
+    if(val){const ch=S.challenges.find(c=>c.id===id);if(ch)t+=ch.pts;else if(id.startsWith('qz_'))t+=typeof val==='number'?val:10;}
+  const qk='qr_'+i+'_'+dk(day);
+  if(S.quranCounter&&S.quranCounter[qk])t+=(S.quranCounter[qk].pages||0)*5;
+  const dk2='dk_'+i+'_'+dk(day);
+  if(S.dhikrCounter&&S.dhikrCounter[dk2])t+=(S.dhikrCounter[dk2].rounds||0)*5;
+  return t;
+}
+
+// ===== PODIUM =====
+function renderLeaderboard(){
+  renderTodayLeaderboard();
+  renderTotalLeaderboard();
+}
+
+function renderTodayLeaderboard(){
+  const el=document.getElementById('todayPodium');
+  if(!el)return;
+  const sorted=[...S.members].map((m,i)=>({m,i,pts:dayPts(m,i,S.day)})).sort((a,b)=>b.pts-a.pts);
+  const medals=['🥇','🥈','🥉'];
+  el.innerHTML='';
+  el.style.cssText='display:flex;flex-direction:column;gap:10px;';
+  sorted.forEach((item,rank)=>{
+    const row=document.createElement('div');
+    const isMe=item.i===S.mem;
+    row.style.cssText=`display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:${isMe?'rgba(200,151,43,.12)':'rgba(255,255,255,.04)'};border:1.5px solid ${isMe?'rgba(200,151,43,.3)':'rgba(255,255,255,.08)'};transition:.2s;`;
+    row.innerHTML=`
+      <div style="font-size:22px;width:28px;text-align:center;">${medals[rank]||rank+1}</div>
+      <div style="font-size:24px;">${item.m.emoji}</div>
+      <div style="flex:1;">
+        <div style="font-weight:700;color:#fff;font-size:14px;">${item.m.name}${isMe?' <span style="font-size:10px;color:var(--gold-light);font-weight:600;">أنت</span>':''}</div>
+      </div>
+      <div style="text-align:left;">
+        <div style="font-family:'Amiri',serif;font-size:20px;font-weight:700;color:${rank===0?'var(--gold)':rank===1?'#aaa':rank===2?'#cd7f32':'var(--ink-soft)'};">${item.pts}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);">نقطة اليوم</div>
+      </div>`;
+    el.appendChild(row);
+  });
+}
+
+function renderTotalLeaderboard(){
+  const sorted=[...S.members].map((m,i)=>({...m,oi:i,tp:totalPts(m,i)})).sort((a,b)=>b.tp-a.tp);
+  const max=sorted[0]?.tp||1;
+
+  // podium: visual order silver(2nd), gold(1st), bronze(3rd)
+  const po=document.getElementById('podium');po.innerHTML='';
+  const vOrder=[[1,'p2','🥈',2],[0,'p1','🥇',1],[2,'p3','🥉',3]];
+  vOrder.forEach(([ri,cls,crown,num])=>{
+    const m=sorted[ri];if(!m)return;
+    const d=document.createElement('div');
+    d.className='podium-place '+cls;
+    d.innerHTML=`
+      <div class="podium-avatar"><div class="crown">${crown}</div>${m.emoji}</div>
+      <div class="podium-name">${m.name}</div>
+      <div class="podium-pts">${m.tp} نقطة</div>
+      <div class="podium-block">${num}</div>`;
+    d.onclick=()=>{S.mem=m.oi;save();render();};
+    po.appendChild(d);
+  });
+
+  // rest
+  const re=document.getElementById('lbRest');re.innerHTML='';
+  sorted.slice(3).forEach((m,i)=>{
+    const pct=Math.round(m.tp/Math.max(max,1)*100);
+    const row=document.createElement('div');
+    row.className='member-row';
+    row.innerHTML=`<div class="rank-num">${i+4}</div><div class="m-avatar">${m.emoji}</div><div class="m-info"><div class="m-name">${m.name}</div><div class="m-pts-row"><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div><span class="pts-lbl">${m.tp} نقطة</span></div></div>`;
+    row.onclick=()=>{S.mem=m.oi;save();render();};
+    re.appendChild(row);
+  });
+}
+
+function renderScore(){
+  const myPts=totalPts(cur(),S.mem);
+  document.getElementById('totalScoreNum').textContent=myPts;
+  // حساب الترتيب
+  const allPts=S.members.map((m,i)=>totalPts(m,i)).sort((a,b)=>b-a);
+  const rank=allPts.indexOf(myPts)+1;
+  const rankEl=document.getElementById('totalScoreRank');
+  const medals=['🥇 الأول','🥈 الثاني','🥉 الثالث'];
+  rankEl.textContent=medals[rank-1]||('المركز '+rank);
+}
+
+function renderRems(){
+  const el=document.getElementById('remList');el.innerHTML='';
+  REMS.forEach(r=>{const i=document.createElement('div');i.className='rem-item';i.innerHTML=`<div class="rem-dot"></div><span>${r}</span>`;el.appendChild(i);});
+}
+
+function renderAchs(){
+  const el=document.getElementById('achGrid');
+  const m=cur();
+  const pts=S.members.map((mm,i)=>totalPts(mm,i));
+  m.isTop=totalPts(m,S.mem)>=Math.max(...pts);
+  el.innerHTML='';
+  ACHS.forEach(a=>{
+    const e=a.fn(m);
+    const d=document.createElement('div');
+    d.className='ach'+(e?' earned':' locked');
+    d.innerHTML=`<div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div>`;
+    el.appendChild(d);
+  });
+}
+
+function renderCountdown(){
+  const target=new Date('2025-06-05T00:00:00');
+  const diff=Math.max(0,target-new Date());
+  const d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+  document.getElementById('hajjCd').innerHTML=
+    ['يوم','ساعة','دقيقة','ثانية'].map((l,i)=>`<div class="cd-unit"><div class="cd-num">${String([d,h,m,s][i]).padStart(2,'0')}</div><div class="cd-lbl">${l}</div></div>`).join('');
+}
+setInterval(renderCountdown,1000);renderCountdown();
+
+// MEMBER ADD
+function addMember(){
+  const inp=document.getElementById('newMemInput');const name=inp.value.trim();
+  if(!name)return;if(S.members.length>=10){showToast('الحد الأقصى 10 أفراد');return;}
+  S.members.push({name,emoji:EMOJIS[S.members.length%EMOJIS.length],checks:{},streak:0,totalChecks:0,fastingDays:0,quranDays:0,sadaqaDays:0,fullDays:0,familyDays:0});
+  inp.value='';save();render();showToast('مرحباً '+name+'! 🎉');
+}
+document.getElementById('newMemInput').onkeydown=e=>{if(e.key==='Enter')addMember();};
+
+// QUIZ
+let qAnswered=false;
+function renderQuiz(){
+  if(!S.quizzes.length){document.getElementById('quizQ').textContent='لا توجد أسئلة';return;}
+  const q=S.quizzes[S.qi%S.quizzes.length];
+  const pts=q.pts||10;
+  const m=cur();
+  const alreadyAnswered=!!(m.checks[dk(S.day)]&&m.checks[dk(S.day)]['qz_'+S.qi]);
+  document.getElementById('quizQ').textContent=q.q;
+  // Show pts badge
+  const badge=document.getElementById('quizPtsBadge');
+  if(alreadyAnswered){
+    badge.textContent='✅ أجبت عليه (+'+pts+' نقطة)';
+    badge.style.background='var(--emerald-pale)';badge.style.borderColor='var(--emerald)';badge.style.color='var(--emerald)';
+  } else {
+    badge.textContent='+'+pts+' نقطة';
+    badge.style.background='var(--gold-pale)';badge.style.borderColor='var(--gold)';badge.style.color='var(--gold)';
+  }
+  badge.style.display='block';
+  const el=document.getElementById('quizOpts');el.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('div');
+    b.className='quiz-opt';
+    if(alreadyAnswered){b.style.opacity='.6';b.style.pointerEvents='none';}
+    if(alreadyAnswered&&i===q.ans)b.classList.add('correct');
+    b.textContent=o;
+    b.onclick=()=>answerQ(i);
+    el.appendChild(b);
+  });
+  const fb=document.getElementById('quizFb');
+  if(alreadyAnswered){
+    fb.textContent='✅ أجبت على هذا السؤال وحصلت على '+pts+' نقطة';
+    fb.className='quiz-fb show ok';
+  } else {
+    fb.className='quiz-fb';
+  }
+  document.getElementById('nxtBtn').className='nxt-btn show';
+  qAnswered=alreadyAnswered;
+}
+function answerQ(i){
+  if(qAnswered)return;qAnswered=true;
+  const q=S.quizzes[S.qi%S.quizzes.length];
+  const pts=q.pts||10;
+  document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+  if(i!==q.ans)document.querySelectorAll('.quiz-opt')[i].classList.add('wrong');
+  const fb=document.getElementById('quizFb');
+  if(i===q.ans){
+    fb.textContent='✅ أحسنت! '+(q.exp||'');fb.className='quiz-fb show ok';
+    const m=cur();
+    if(!m.checks[dk(S.day)])m.checks[dk(S.day)]={};
+    const key='qz_'+S.qi;
+    // Only add if not answered before — store pts as the value (not true) so totalPts reads it correctly
+    if(!m.checks[dk(S.day)][key]){
+      m.checks[dk(S.day)][key]=pts;
+      logActivity('❓',`أجاب على سؤال المسابقة بشكل صحيح`,pts);
+      save();render();renderActivityLog();showToast('🌟 +'+pts+' نقطة!');
+    } else {
+      showToast('✅ أجبت على هذا السؤال من قبل');
+    }
+  } else {
+    fb.textContent='❌ الإجابة: '+q.opts[q.ans]+'. '+(q.exp||'');fb.className='quiz-fb show no';
+  }
+  document.getElementById('nxtBtn').className='nxt-btn show';
+}
+function nextQuiz(){S.qi=(S.qi+1)%S.quizzes.length;save();renderQuiz();}
+
+// WHEEL
+let spinning=false,wAngle=0;
+function drawWheel(){
+  const c=document.getElementById('wheelCanvas'),ctx=c.getContext('2d');
+  const cx=100,cy=100,r=95,arc=(2*Math.PI)/WHEEL.length;
+  ctx.clearRect(0,0,200,200);
+  WHEEL.forEach((p,i)=>{
+    const s=i*arc+wAngle,e=s+arc;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.fillStyle=WCOLS[i%WCOLS.length];ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';ctx.fillStyle='#fff';
+    ctx.font='bold 9px Tajawal,sans-serif';ctx.fillText(p.label.split(' ').slice(0,2).join(' '),r-6,4);ctx.restore();
+  });
+  ctx.beginPath();ctx.arc(cx,cy,15,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  ctx.fillStyle='#C8972B';ctx.font='13px sans-serif';ctx.textAlign='center';ctx.fillText('🎡',cx,cy+5);
+}
+// WHEEL PERMISSION CHECK
+function canSpin(){
+  const i=S.mem;
+  // If wheelPerms has at least one entry, check if this member is allowed
+  const hasRestrictions=Object.keys(S.wheelPerms).length>0;
+  if(hasRestrictions&&S.wheelPerms[i]===false)return{ok:false,msg:'🚫 غير مسموح لك باستخدام العجلة'};
+  // Check spin limit
+  const limit=S.wheelSpinLimit[i]||0;
+  if(limit>0){
+    const used=S.wheelSpinUsed[i]||0;
+    if(used>=limit)return{ok:false,msg:`🚫 استنفذت عدد مراتك (${limit}/${limit})`};
+    return{ok:true,msg:`✅ متبقي لك ${limit-used} من ${limit} إدارات`};
+  }
+  return{ok:true,msg:''};
+}
+function renderWheelStatus(){
+  const res=canSpin();
+  const btn=document.getElementById('spinBtn');
+  const info=document.getElementById('spinRes');
+  if(!res.ok){
+    btn.disabled=true;
+    info.textContent=res.msg;
+    info.style.color='var(--rose)';
+  } else {
+    if(!spinning)btn.disabled=false;
+    if(res.msg){info.textContent=res.msg;info.style.color='var(--emerald)';}
+    else{if(!spinning){info.textContent='';info.style.color='';}};
+  }
+}
+
+function doSpin(){
+  if(spinning)return;
+  const check=canSpin();
+  if(!check.ok){showToast(check.msg);return;}
+  spinning=true;document.getElementById('spinBtn').disabled=true;document.getElementById('spinRes').textContent='';document.getElementById('spinRes').style.color='';
+  // Track spin usage
+  const limit=S.wheelSpinLimit[S.mem]||0;
+  if(limit>0){S.wheelSpinUsed[S.mem]=(S.wheelSpinUsed[S.mem]||0)+1;save();}
+
+  const extra=(Math.random()*4+5)*2*Math.PI;
+  const pi=Math.floor(Math.random()*WHEEL.length);
+  const arc=(2*Math.PI)/WHEEL.length;
+  const tgt=(2*Math.PI-pi*arc-arc/2)-(wAngle%(2*Math.PI));
+  const final=wAngle+extra+tgt;
+  const sa=wAngle,dur=4000,st=performance.now();
+  const animate=now=>{
+    const t=Math.min((now-st)/dur,1);
+    wAngle=sa+(final-sa)*(1-Math.pow(1-t,4));
+    drawWheel();
+    if(t<1){requestAnimationFrame(animate);}
+    else{
+      spinning=false;document.getElementById('spinBtn').disabled=false;
+      const prize=WHEEL[pi];document.getElementById('spinRes').textContent='🎉 '+prize.label;document.getElementById('spinRes').style.color='var(--emerald)';
+      if(prize.pts>0){S.bonus[S.mem]=(S.bonus[S.mem]||0)+prize.pts;save();render();}
+      else{renderWheelStatus();}
+      showModal('🎉','مبروك!','فزت بـ '+prize.label);
+    }
+  };requestAnimationFrame(animate);
+}
+
+// ACHIEVEMENTS
+function checkAchs(){
+  const m=cur();
+  ACHS.forEach(a=>{
+    if(a.fn(m)){const k='ach_'+a.id+'_'+S.mem;if(!localStorage.getItem(k)){localStorage.setItem(k,'1');setTimeout(()=>showModal(a.icon,'إنجاز جديد! 🎖️','حصلت على: '+a.name),600);}}
+  });
+}
+
+// TOAST
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// MODAL
+function showModal(icon,title,body){
+  document.getElementById('mIcon').textContent=icon;document.getElementById('mTitle').textContent=title;
+  document.getElementById('mBody').textContent=body;document.getElementById('modalOv').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOv').classList.remove('open');}
+
+// ===== ADMIN =====
+let admLoggedIn=false,selEmoji=EMOJIS[0];
+
+function openAdmin(){
+  document.getElementById('admOv').classList.add('open');
+  if(admLoggedIn){renderAdm();}
+  else{document.getElementById('pwdInp').value='';document.getElementById('pwdErr').classList.remove('show');}
+}
+function closeAdmin(){document.getElementById('admOv').classList.remove('open');}
+function doLogout(){admLoggedIn=false;document.getElementById('pwdWrap').style.display='';document.getElementById('admContent').style.display='none';}
+function tryLogin(){
+  if(document.getElementById('pwdInp').value===S.pwd){
+    admLoggedIn=true;
+    document.getElementById('pwdWrap').style.display='none';
+    document.getElementById('admContent').style.display='block';
+    renderAdm();
+  } else document.getElementById('pwdErr').classList.add('show');
+}
+document.getElementById('pwdInp').onkeydown=e=>{if(e.key==='Enter')tryLogin();};
+
+function swTab(name,el){
+  document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.adm-sec').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');document.getElementById('as-'+name).classList.add('active');
+  if(name==='stats')renderAdmStats();
+  if(name==='members')renderAdmMembers();
+  if(name==='challenges')renderAdmChallenges();
+  if(name==='quizzes')renderAdmQuizzes();
+  if(name==='daily')renderAdmDaily();
+  if(name==='wheel')renderAdmWheel();
+  if(name==='settings')document.getElementById('admDay').value=S.day;
+}
+
+function renderAdm(){renderAdmStats();renderAdmMembers();renderAdmChallenges();renderAdmQuizzes();}
+
+function renderAdmStats(){
+  const tp=S.members.reduce((a,m,i)=>a+totalPts(m,i),0);
+  const tc=S.members.reduce((a,m)=>a+m.totalChecks,0);
+  const mx=Math.max(...S.members.map((m,i)=>totalPts(m,i)));
+  document.getElementById('statsG').innerHTML=`
+    <div class="stat-box"><div class="stat-v">${S.members.length}</div><div class="stat-l">الأعضاء</div></div>
+    <div class="stat-box"><div class="stat-v">${tc}</div><div class="stat-l">مجموع التحقق</div></div>
+    <div class="stat-box"><div class="stat-v">${tp}</div><div class="stat-l">مجموع النقاط</div></div>
+    <div class="stat-box"><div class="stat-v">${mx}</div><div class="stat-l">أعلى نقاط</div></div>`;
+  const sorted=[...S.members].map((m,i)=>({...m,oi:i,tp:totalPts(m,i)})).sort((a,b)=>b.tp-a.tp);
+  document.getElementById('statsTbl').innerHTML=`
+    <thead><tr><th>الترتيب</th><th>العضو</th><th>النقاط</th><th>المكافآت</th><th>المهام</th></tr></thead>
+    <tbody>${sorted.map((m,i)=>`<tr><td>${['🥇','🥈','🥉'][i]||i+1}</td><td>${m.emoji} ${m.name}</td><td style="color:var(--gold-light);font-weight:700">${m.tp}</td><td>${S.bonus[m.oi]||0}</td><td>${m.totalChecks}</td></tr>`).join('')}</tbody>`;
+}
+
+function renderAdmMembers(){
+  const tbody=document.getElementById('memTbl');tbody.innerHTML='';
+  S.members.forEach((m,i)=>{
+    const tp=totalPts(m,i),bonus=S.bonus[i]||0;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><input class="adm-inp" style="width:90px" value="${m.name}" onchange="renameM(${i},this.value)"></td>
+      <td>
+        <select class="adm-inp" style="width:50px" onchange="changeEm(${i},this.value)">
+          ${EMOJIS.map(e=>`<option value="${e}"${e===m.emoji?' selected':''}>${e}</option>`).join('')}
+        </select>
+      </td>
+      <td><input class="adm-inp" style="width:70px;letter-spacing:3px;text-align:center;" type="text" maxlength="6" value="${m.pin||'000'}" placeholder="رمز" onchange="changePin(${i},this.value)" title="الرمز السري"></td>
+      <td style="color:var(--gold-light);font-weight:700">${tp}</td>
+      <td><div class="pts-adj">
+        <button onclick="adjPts(${i},-10)">−</button>
+        <span>${bonus}</span>
+        <button onclick="adjPts(${i},+10)">+</button>
+      </div></td>
+      <td><button class="adm-btn btn-r" onclick="delM(${i})">🗑️</button></td>`;
+    tbody.appendChild(tr);
+  });
+  // emoji picker
+  const pick=document.getElementById('emojiPick');pick.innerHTML='';
+  EMOJIS.forEach(e=>{const s=document.createElement('span');s.className='ep'+(e===selEmoji?' s':'');s.textContent=e;s.onclick=()=>{selEmoji=e;renderAdmMembers();};pick.appendChild(s);});
+}
+function renameM(i,v){if(v.trim()){S.members[i].name=v.trim();save();render();}}
+function changeEm(i,e){S.members[i].emoji=e;save();render();}
+function changePin(i,v){if(v.trim()){S.members[i].pin=v.trim();save();showToast(`✅ تم تغيير رمز ${S.members[i].name}`);}}
+function adjPts(i,d){S.bonus[i]=(S.bonus[i]||0)+d;save();render();renderAdmMembers();renderAdmStats();showToast(`${d>0?'+':''}${d} نقطة لـ ${S.members[i].name}`);}
+function admAddMember(){
+  const n=document.getElementById('admNewName').value.trim();if(!n)return;
+  if(S.members.length>=10){showToast('الحد الأقصى 10');return;}
+  const pin=document.getElementById('admNewPin')?document.getElementById('admNewPin').value.trim()||'000':'000';
+  S.members.push({name:n,emoji:selEmoji,pin,checks:{},streak:0,totalChecks:0,fastingDays:0,quranDays:0,sadaqaDays:0,fullDays:0,familyDays:0});
+  document.getElementById('admNewName').value='';if(document.getElementById('admNewPin'))document.getElementById('admNewPin').value='';
+  save();render();renderAdmMembers();renderAdmStats();showToast('تم إضافة '+n+' 🎉');
+}
+function delM(i){
+  if(S.members.length<=1){showToast('يجب بقاء عضو واحد على الأقل');return;}
+  const n=S.members[i].name;S.members.splice(i,1);
+  delete S.bonus[i];if(S.mem>=S.members.length)S.mem=0;
+  save();render();renderAdmMembers();renderAdmStats();showToast('تم حذف '+n);
+}
+
+function renderAdmChallenges(){
+  const el=document.getElementById('admChList');el.innerHTML='';
+  S.challenges.forEach((ch,i)=>{
+    const row=document.createElement('div');row.className='adm-ch-row';
+    row.innerHTML=`
+      <input class="adm-inp" style="width:42px;text-align:center" value="${ch.emoji}" onchange="updCh(${i},'emoji',this.value)">
+      <input class="adm-inp" style="flex:1" value="${ch.name}" onchange="updCh(${i},'name',this.value)">
+      <input class="adm-inp" style="width:70px" type="number" value="${ch.pts}" min="1" onchange="updCh(${i},'pts',+this.value)">
+      <button class="adm-btn btn-r" onclick="delCh(${i})">🗑️</button>`;
+    el.appendChild(row);
+  });
+}
+function updCh(i,f,v){S.challenges[i][f]=v;save();renderChallenges();}
+function delCh(i){S.challenges.splice(i,1);save();renderChallenges();renderAdmChallenges();}
+function admAddChallenge(){
+  const n=document.getElementById('newChName').value.trim();
+  const e=document.getElementById('newChEmoji').value.trim()||'⭐';
+  const p=parseInt(document.getElementById('newChPts').value)||10;
+  if(!n)return;
+  S.challenges.push({id:'c'+Date.now(),name:n,emoji:e,pts:p});
+  ['newChName','newChEmoji','newChPts'].forEach(id=>document.getElementById(id).value='');
+  save();renderChallenges();renderAdmChallenges();showToast('تم إضافة التحدي ✅');
+}
+
+function renderAdmQuizzes(){
+  const el=document.getElementById('admQzList');el.innerHTML='';
+  S.quizzes.forEach((q,i)=>{
+    const pts=q.pts||10;
+    const d=document.createElement('div');d.className='quiz-item';
+    d.innerHTML=`
+      <div class="quiz-item-hdr">
+        <div class="quiz-item-q">س${i+1}: ${q.q}</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:4px;background:rgba(200,151,43,.15);border:1px solid rgba(200,151,43,.3);border-radius:8px;padding:3px 8px;">
+            <span style="color:var(--gold-light);font-size:11px;font-weight:700;">نقاط:</span>
+            <input type="number" min="1" value="${pts}" style="width:48px;background:transparent;border:none;color:var(--gold-light);font-weight:700;font-size:13px;font-family:'Tajawal',sans-serif;outline:none;text-align:center;" onchange="updQzPts(${i},+this.value)">
+          </div>
+          <button class="adm-btn btn-r" onclick="delQz(${i})">🗑️</button>
+        </div>
+      </div>
+      <div class="quiz-item-opts">${q.opts.map((o,j)=>`${j===q.ans?'✅':'○'} ${o}`).join(' &nbsp;|&nbsp; ')}</div>`;
+    el.appendChild(d);
+  });
+}
+function updQzPts(i,v){if(v>=1){S.quizzes[i].pts=v;save();showToast('✅ تم تحديث النقاط');renderQuiz();}}
+function delQz(i){S.quizzes.splice(i,1);if(S.qi>=S.quizzes.length)S.qi=0;save();renderAdmQuizzes();renderQuiz();showToast('تم حذف السؤال');}
+function admAddQuiz(){
+  const q=document.getElementById('nqQ').value.trim();
+  const opts=[0,1,2,3].map(i=>document.getElementById('nqO'+i).value.trim()).filter(Boolean);
+  if(!q||opts.length<2){showToast('أدخل السؤال وخيارين على الأقل');return;}
+  const ans=Math.min(+document.getElementById('nqAns').value,opts.length-1);
+  const exp=document.getElementById('nqExp').value.trim();
+  const pts=Math.max(1,parseInt(document.getElementById('nqPts').value)||10);
+  S.quizzes.push({q,opts,ans,exp,pts});
+  ['nqQ','nqO0','nqO1','nqO2','nqO3','nqExp'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('nqPts').value='10';
+  save();renderAdmQuizzes();renderQuiz();showToast('تم إضافة السؤال ✅');
+}
+
+function admSetDay(){const v=parseInt(document.getElementById('admDay').value);if(v>=1&&v<=10){S.day=v;save();render();showToast('اليوم '+v);}}
+function changePwd(){const v=document.getElementById('newPwdF').value.trim();if(!v){showToast('أدخل كلمة مرور');return;}S.pwd=v;save();document.getElementById('newPwdF').value='';showToast('✅ تم تغيير كلمة المرور');}
+function resetAll(){if(!confirm('حذف كل البيانات؟'))return;localStorage.removeItem('dh2');location.reload();}
+function resetScores(){
+  if(!confirm('مسح جميع النقاط؟'))return;
+  S.members.forEach(m=>{m.checks={};m.streak=0;m.totalChecks=0;m.fastingDays=0;m.quranDays=0;m.sadaqaDays=0;m.fullDays=0;m.familyDays=0;});
+  S.bonus={};
+  S.quranCounter={};
+  S.dhikrCounter={};
+  S.wheelSpinUsed={};
+  save();render();renderAdm();showToast('تم إعادة الضبط ✅');
+}
+
+function renderAdmDaily(){
+  document.getElementById('dailyDayLabel').textContent='— اليوم '+S.day+' من عشر ذي الحجة';
+  const el=document.getElementById('dailyAchGrid');
+  el.innerHTML='';
+  S.members.forEach((m,mi)=>{
+    const checks=dayChecks(m,S.day);
+    const done=S.challenges.filter(c=>checks[c.id]);
+    const notDone=S.challenges.filter(c=>!checks[c.id]);
+    const quranKey='qr_'+mi+'_'+dk(S.day);
+    const quranPages=(S.quranCounter&&S.quranCounter[quranKey])?S.quranCounter[quranKey].pages||0:0;
+    const dhikrKey='dk_'+mi+'_'+dk(S.day);
+    const dhikrData=S.dhikrCounter&&S.dhikrCounter[dhikrKey];
+    const dhikrTotal=dhikrData?dhikrData.total||0:0;
+    const dhikrRounds=dhikrData?dhikrData.rounds||0:0;
+    const quizPts=Object.entries(checks).filter(([k,v])=>k.startsWith('qz_')&&v).reduce((a,[,v])=>a+(typeof v==='number'?v:10),0);
+    const dayPts=done.reduce((a,c)=>a+c.pts,0)+(quranPages*5)+(dhikrRounds*5)+quizPts;
+
+    const card=document.createElement('div');
+    card.style.cssText='background:rgba(255,255,255,.05);border-radius:14px;border:1px solid rgba(255,255,255,.1);overflow:hidden;';
+    card.innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,.05);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:28px;">${m.emoji}</span>
+          <div>
+            <div style="color:#fff;font-weight:700;font-size:15px;">${m.name}</div>
+            <div style="color:var(--gold-light);font-size:12px;font-weight:600;">نقاط اليوم: ${dayPts} نقطة</div>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--emerald);">${done.length}/${S.challenges.length}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.35);">تحدي مكتمل</div>
+        </div>
+      </div>
+      <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
+        ${done.length?`
+        <div style="font-size:11px;font-weight:700;color:var(--emerald);margin-bottom:2px;">✅ أنجز</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${done.map(c=>`<div style="background:rgba(26,107,74,.2);border:1px solid rgba(26,107,74,.3);border-radius:8px;padding:4px 10px;font-size:12px;color:#fff;display:flex;align-items:center;gap:4px;"><span>${c.emoji}</span><span>${c.name}</span><span style="color:var(--emerald);font-weight:700;">+${c.pts}</span></div>`).join('')}
+        </div>`:''}
+        ${notDone.length?`
+        <div style="font-size:11px;font-weight:700;color:rgba(255,100,80,.7);margin-top:4px;">⏳ لم ينجز</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${notDone.map(c=>`<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:4px 10px;font-size:12px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px;"><span>${c.emoji}</span><span>${c.name}</span></div>`).join('')}
+        </div>`:''}
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          ${quranPages>0?`<div style="background:rgba(26,107,74,.15);border:1px solid rgba(26,107,74,.25);border-radius:8px;padding:4px 10px;font-size:12px;color:var(--emerald);">📖 ${quranPages} وجه (+${quranPages*5} نقطة)</div>`:''}
+          ${dhikrTotal>0?`<div style="background:rgba(200,151,43,.15);border:1px solid rgba(200,151,43,.25);border-radius:8px;padding:4px 10px;font-size:12px;color:var(--gold-light);">📿 ${dhikrTotal} ذكر (${dhikrRounds} مئة · +${dhikrRounds*5} نقطة)</div>`:''}
+          ${quizPts>0?`<div style="background:rgba(56,152,220,.15);border:1px solid rgba(56,152,220,.25);border-radius:8px;padding:4px 10px;font-size:12px;color:#60B8EE;">❓ كويز +${quizPts} نقطة</div>`:''}
+          ${done.length===0&&quranPages===0&&dhikrTotal===0&&quizPts===0?`<div style="font-size:12px;color:rgba(255,255,255,.3);">لا يوجد إنجازات بعد اليوم</div>`:''}
+        </div>
+      </div>`;
+    el.appendChild(card);
+  });
+}
+
+function renderAdmWheel(){
+  // Permissions list
+  const permEl=document.getElementById('wheelPermList');
+  permEl.innerHTML='';
+  S.members.forEach((m,i)=>{
+    const allowed=S.wheelPerms[i]!==false;
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.08);';
+    row.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:20px">${m.emoji}</span>
+        <span style="color:#fff;font-weight:600;font-size:14px;">${m.name}</span>
+      </div>
+      <button class="adm-btn ${allowed?'btn-g':'btn-r'}" onclick="toggleWheelPerm(${i})">
+        ${allowed?'✅ مسموح':'🚫 ممنوع'}
+      </button>`;
+    permEl.appendChild(row);
+  });
+  // Spin limit list
+  const limitEl=document.getElementById('wheelSpinLimitList');
+  limitEl.innerHTML='';
+  S.members.forEach((m,i)=>{
+    const limit=S.wheelSpinLimit[i]||0;
+    const used=S.wheelSpinUsed[i]||0;
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.08);gap:10px;flex-wrap:wrap;';
+    row.innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:20px">${m.emoji}</span>
+        <span style="color:#fff;font-weight:600;font-size:14px;">${m.name}</span>
+        <span style="color:rgba(255,255,255,.35);font-size:12px;">(استخدم: ${used})</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="pts-adj">
+          <button onclick="adjustWheelLimit(${i},-1)">−</button>
+          <span>${limit===0?'∞':limit}</span>
+          <button onclick="adjustWheelLimit(${i},+1)">+</button>
+        </div>
+        <button class="adm-btn btn-r" style="font-size:11px;" onclick="resetWheelUsed(${i})">↩ إعادة</button>
+      </div>`;
+    limitEl.appendChild(row);
+  });
+}
+function toggleWheelPerm(i){
+  S.wheelPerms[i]=S.wheelPerms[i]===false?true:false;
+  save();render();renderAdmWheel();
+  showToast(`${S.members[i].name}: ${S.wheelPerms[i]===false?'🚫 ممنوع':'✅ مسموح'}`);
+}
+function setWheelAll(allowed){
+  S.members.forEach((_,i)=>{S.wheelPerms[i]=allowed;});
+  save();render();renderAdmWheel();
+  showToast(allowed?'✅ السماح للجميع':'🚫 منع الجميع');
+}
+function adjustWheelLimit(i,d){
+  const cur=S.wheelSpinLimit[i]||0;
+  S.wheelSpinLimit[i]=Math.max(0,cur+d);
+  save();render();renderAdmWheel();
+}
+function resetWheelUsed(i){
+  S.wheelSpinUsed[i]=0;
+  save();render();renderAdmWheel();
+  showToast(`تم إعادة عداد ${S.members[i].name} ✅`);
+}
+
+// ===== QURAN COUNTER =====
+function getQuranKey(){return 'qr_'+S.mem+'_'+dk(S.day);}
+function getQuranData(){
+  if(!S.quranCounter)S.quranCounter={};
+  if(!S.quranCounter[getQuranKey()])S.quranCounter[getQuranKey()]={pages:0};
+  return S.quranCounter[getQuranKey()];
+}
+function getTotalQuranPages(){
+  if(!S.quranCounter)return 0;
+  return Object.entries(S.quranCounter)
+    .filter(([k])=>k.startsWith('qr_'+S.mem+'_'))
+    .reduce((a,[,v])=>a+(v.pages||0),0);
+}
+function getQuranPtsToday(){
+  // نقاط القرآن = عدد الأوجه × 5 لكل عضو ولكل يوم
+  const d=getQuranData();
+  return (d.pages||0)*5;
+}
+function tapQuran(){
+  const btn=document.getElementById('quranBtn');
+  btn.classList.remove('tap-pulse');void btn.offsetWidth;btn.classList.add('tap-pulse');
+  const d=getQuranData();
+  d.pages=(d.pages||0)+1;
+  if(!S.quranCounter)S.quranCounter={};
+  S.quranCounter[getQuranKey()]=d;
+  logActivity('📖',`قرأ وجهاً من القرآن الكريم (${d.pages} إجمالاً)`,5);
+  save();renderQuranCounter();render();renderActivityLog();
+  showToast('📖 وجه +5 نقاط!');
+}
+function resetQuranToday(){
+  if(!confirm('إعادة عداد الأوجه لهذا اليوم؟'))return;
+  if(!S.quranCounter)S.quranCounter={};
+  S.quranCounter[getQuranKey()]={pages:0};
+  save();renderQuranCounter();render();
+}
+function renderQuranCounter(){
+  const d=getQuranData();
+  const pts=getQuranPtsToday();
+  document.getElementById('quranCount').textContent=d.pages||0;
+  document.getElementById('quranPts').textContent=pts+' نقطة';
+  document.getElementById('quranTotal').textContent=getTotalQuranPages()+' وجه';
+}
+
+// ===== DHIKR COUNTER =====
+let _dhikrSession=0;
+function getDhikrKey(){return 'dk_'+S.mem+'_'+dk(S.day);}
+function getDhikrData(){
+  if(!S.dhikrCounter)S.dhikrCounter={};
+  if(!S.dhikrCounter[getDhikrKey()])S.dhikrCounter[getDhikrKey()]={total:0,rounds:0};
+  return S.dhikrCounter[getDhikrKey()];
+}
+function tapDhikr(){
+  const btn=document.getElementById('dhikrBtn');
+  btn.classList.remove('tap-pulse');void btn.offsetWidth;btn.classList.add('tap-pulse');
+  _dhikrSession++;
+  const d=getDhikrData();
+  d.total=(d.total||0)+1;
+  // كل 100 ذكر = مئة جديدة
+  const newRounds=Math.floor(d.total/100);
+  if(newRounds>(d.rounds||0)){
+    d.rounds=newRounds;
+    if(!S.dhikrCounter)S.dhikrCounter={};
+    S.dhikrCounter[getDhikrKey()]=d;
+    save();render();renderActivityLog();
+    logActivity('📿',`أكمل ${newRounds*100} ذكر (${newRounds} مئة)`,5);
+    showToast('📿 مئة ذكر! +5 نقاط 🎉');
+  } else {
+    if(!S.dhikrCounter)S.dhikrCounter={};
+    S.dhikrCounter[getDhikrKey()]=d;
+    save();
+  }
+  renderDhikrCounter();
+}
+function resetDhikrSession(){
+  _dhikrSession=0;
+  renderDhikrCounter();
+  showToast('↩ تم إعادة عرض الجلسة');
+}
+function renderDhikrCounter(){
+  const d=getDhikrData();
+  const total=d.total||0;
+  const rounds=d.rounds||0;
+  const rem=total%100;
+  const pct=(rem/100)*100;
+  document.getElementById('dhikrCount').textContent=total;
+  document.getElementById('dhikrProg').textContent=rem+'/100';
+  document.getElementById('dhikrRounds').textContent=rounds+' مئة';
+  document.getElementById('dhikrBar').style.width=pct+'%';
+  document.getElementById('dhikrPts').textContent=(rounds*5)+' نقطة مكتسبة';
+  document.getElementById('dhikrTotal').textContent=total+' ذكر';
+  document.getElementById('dhikrTotalPts').textContent=(rounds*5)+' نقطة';
+}
+
+// ===== LOGIN SYSTEM =====
+function adminDirectLogin(){
+  const pwd=prompt('كلمة مرور الإدارة:');
+  if(!pwd)return;
+  if(pwd===S.pwd||pwd==='1234'||pwd==='admin'){
+    document.getElementById('loginOverlay').style.display='none';
+    S.mem=0;
+    render();renderQuranCounter();renderDhikrCounter();renderActivityLog();
+    setTimeout(()=>openAdmin(),300);
+  } else {
+    alert('كلمة المرور غير صحيحة\nجرب: 1234');
+  }
+}
+function showLogin(){
+  // rebuild dropdown every time in case members updated from Firebase
+  const sel=document.getElementById('loginName');
+  sel.innerHTML='<option value="" style="background:#1a1f35;color:#fff;">اختر اسمك...</option>';
+  if(S.members&&S.members.length){
+    S.members.forEach((m,i)=>{
+      const opt=document.createElement('option');
+      opt.value=i;opt.textContent=m.emoji+' '+m.name;
+      opt.style.background='#1a1f35';opt.style.color='#fff';
+      sel.appendChild(opt);
+    });
+  }
+  document.getElementById('loginPin').value='';
+  document.getElementById('loginErr').style.display='none';
+  document.getElementById('loginOverlay').style.display='flex';
+}
+function doLogin(){
+  const idx=parseInt(document.getElementById('loginName').value);
+  const pin=document.getElementById('loginPin').value.trim();
+  const err=document.getElementById('loginErr');
+  if(isNaN(idx)||document.getElementById('loginName').value===''){
+    err.textContent='اختر اسمك أولاً';err.style.display='block';return;
+  }
+  const m=S.members[idx];
+  const memberPin=m.pin||'';
+  // لو العضو ما عنده pin مضبوط، يدخل بدون رمز
+  if(memberPin&&memberPin!=='000'&&memberPin!==pin){
+    err.textContent='الرمز السري غير صحيح ❌';err.style.display='block';
+    document.getElementById('loginPin').value='';
+    document.getElementById('loginPin').focus();return;
+  }
+  S.mem=idx;
+  document.getElementById('loginOverlay').style.display='none';
+  save();render();renderQuranCounter();renderDhikrCounter();renderActivityLog();
+  showToast('أهلاً '+m.name+' '+m.emoji);
+}
+
+// ===== ACTIVITY LOG =====
+function logActivity(emoji,text,pts){
+  if(!S.activityLog)S.activityLog=[];
+  const m=cur();
+  const now=new Date();
+  const time=now.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+  S.activityLog.unshift({name:m.name,memberEmoji:m.emoji,emoji,text,pts,time,day:S.day,ts:Date.now()});
+  if(S.activityLog.length>60)S.activityLog=S.activityLog.slice(0,60);
+}
+function renderActivityLog(){
+  const el=document.getElementById('activityLog');
+  const empty=document.getElementById('activityEmpty');
+  if(!el)return;
+  el.innerHTML='';
+  const log=S.activityLog||[];
+  if(!log.length){if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  log.forEach(entry=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:10px;border-right:3px solid rgba(200,151,43,.35);';
+    row.innerHTML=`
+      <div style="font-size:22px;">${entry.memberEmoji}</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;color:#fff;font-weight:600;">${entry.name} <span style="color:rgba(255,255,255,.3);font-weight:400;font-size:11px;">يوم ${entry.day}</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.45);">${entry.emoji} ${entry.text}</div>
+      </div>
+      <div style="text-align:left;flex-shrink:0;">
+        ${entry.pts?`<div style="color:var(--gold-light);font-weight:700;font-size:13px;">+${entry.pts}</div>`:''}
+        <div style="font-size:10px;color:rgba(255,255,255,.2);">${entry.time}</div>
+      </div>`;
+    el.appendChild(row);
+  });
+}
+function clearLog(){if(!confirm('مسح سجل الإنجازات؟'))return;S.activityLog=[];save();renderActivityLog();}
+
+// ===== MEMBER PROFILE =====
+function openProfile(){document.getElementById('profileModal').style.display='block';renderProfileContent();}
+function closeProfile(){document.getElementById('profileModal').style.display='none';}
+function renderProfileContent(){
+  const m=cur();const i=S.mem;
+  const tp=totalPts(m,i);
+  const todayP=dayPts(m,i,S.day);
+  const totalPages=getTotalQuranPages();
+  const totalDhikr=S.dhikrCounter?Object.entries(S.dhikrCounter).filter(([k])=>k.startsWith('dk_'+i+'_')).reduce((a,[,v])=>a+(v.total||0),0):0;
+  const dayBreakdown=[];
+  for(let d=1;d<=10;d++){const p=dayPts(m,i,d);if(p>0||d<=S.day)dayBreakdown.push({d,p});}
+  const allPts=S.members.map((mm,ii)=>totalPts(mm,ii));
+  const rank=allPts.filter(p=>p>tp).length+1;
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('profileContent').innerHTML=`
+    <div style="background:linear-gradient(135deg,rgba(200,151,43,.15),rgba(26,107,74,.1));border:1.5px solid rgba(200,151,43,.25);border-radius:20px;padding:24px;text-align:center;margin-bottom:16px;">
+      <div style="font-size:56px;margin-bottom:6px;">${m.emoji}</div>
+      <div style="font-size:22px;font-weight:700;color:#fff;margin-bottom:2px;">${m.name}</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.35);margin-bottom:16px;">المركز ${medals[rank-1]||rank}</div>
+      <div style="display:flex;justify-content:center;gap:32px;">
+        <div><div style="font-family:'Amiri',serif;font-size:38px;font-weight:700;color:var(--gold);">${tp}</div><div style="font-size:11px;color:rgba(255,255,255,.35);">مجموع النقاط</div></div>
+        <div><div style="font-family:'Amiri',serif;font-size:38px;font-weight:700;color:var(--emerald);">${todayP}</div><div style="font-size:11px;color:rgba(255,255,255,.35);">نقاط اليوم</div></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="background:rgba(255,255,255,.05);border-radius:14px;padding:14px;text-align:center;"><div style="font-size:22px;">📖</div><div style="font-family:'Amiri',serif;font-size:22px;font-weight:700;color:var(--emerald);">${totalPages}</div><div style="font-size:10px;color:rgba(255,255,255,.3);">وجه قرآن</div></div>
+      <div style="background:rgba(255,255,255,.05);border-radius:14px;padding:14px;text-align:center;"><div style="font-size:22px;">📿</div><div style="font-family:'Amiri',serif;font-size:22px;font-weight:700;color:var(--gold);">${totalDhikr}</div><div style="font-size:10px;color:rgba(255,255,255,.3);">ذكر</div></div>
+      <div style="background:rgba(255,255,255,.05);border-radius:14px;padding:14px;text-align:center;"><div style="font-size:22px;">✅</div><div style="font-family:'Amiri',serif;font-size:22px;font-weight:700;color:#60B8EE;">${m.totalChecks||0}</div><div style="font-size:10px;color:rgba(255,255,255,.3);">تحدي مكتمل</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border-radius:16px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:12px;">📅 نقاط كل يوم</div>
+      ${dayBreakdown.map(({d,p})=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><div style="font-size:11px;color:rgba(255,255,255,.35);width:44px;">يوم ${d}</div><div style="flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;"><div style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--emerald),var(--gold));width:${Math.min(p/Math.max(tp,1)*100,100)}%;"></div></div><div style="font-size:12px;font-weight:700;color:${p>0?'var(--gold-light)':'rgba(255,255,255,.2)'};width:28px;text-align:left;">${p}</div></div>`).join('')}
+    </div>
+    <div style="background:rgba(255,255,255,.04);border-radius:16px;padding:16px;">
+      <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:10px;">📜 آخر نشاطاتي</div>
+      ${(S.activityLog||[]).filter(e=>e.name===m.name).slice(0,8).map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:6px;"><div style="font-size:16px;">${e.emoji}</div><div style="flex:1;font-size:12px;color:rgba(255,255,255,.55);">${e.text}</div>${e.pts?`<div style="font-size:12px;font-weight:700;color:var(--gold-light);">+${e.pts}</div>`:''}<div style="font-size:10px;color:rgba(255,255,255,.2);">${e.time}</div></div>`).join('')||'<div style="color:rgba(255,255,255,.25);font-size:12px;text-align:center;">لا يوجد نشاط بعد</div>'}
+    </div>`;
+}
+
+drawWheel();renderQuiz();render();renderQuranCounter();renderDhikrCounter();renderActivityLog();
+// أول نحاول Firebase، لو ما اشتغل نفتح اللوجن بعد ثانيتين
+const _loginTimer=setTimeout(()=>{showLogin();},2000);
+// Connect to Firebase for real-time sync across all devices
+initFirebase();
+
+// بعد Firebase يرجع البيانات، يلغي التايمر ويفتح اللوجن مع الأسماء الصحيحة
+window._firebaseReady=function(){
+  clearTimeout(_loginTimer);
+  showLogin();
+};
+</script>
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" style="display:none;position:fixed;inset:0;background:rgba(10,15,30,.97);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:linear-gradient(145deg,#1a1f35,#141828);border:1.5px solid rgba(200,151,43,.3);border-radius:24px;padding:32px 28px;width:100%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+    <div style="font-size:48px;margin-bottom:8px;">🌙</div>
+    <div style="font-family:'Amiri',serif;font-size:22px;color:var(--gold-light);margin-bottom:4px;">تحدي العائلة المبارك</div>
+    <div style="color:rgba(255,255,255,.4);font-size:12px;margin-bottom:28px;">سجّل دخولك لتبدأ</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <select id="loginName" style="background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);color:#fff;padding:13px 16px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:15px;outline:none;cursor:pointer;" onchange="document.getElementById('loginPin').focus()">
+        <option value="" style="background:#1a1f35;color:#fff;">اختر اسمك...</option>
+      </select>
+      <input id="loginPin" type="password" inputmode="numeric" maxlength="6" placeholder="الرمز السري 🔒" style="background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);color:#fff;padding:13px 16px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:15px;outline:none;text-align:center;letter-spacing:6px;transition:border-color .2s;" onkeydown="if(event.key==='Enter')doLogin()">
+      <div id="loginErr" style="color:#E07070;font-size:13px;display:none;"></div>
+      <button onclick="doLogin()" style="background:linear-gradient(135deg,var(--gold),#E8A020);color:#fff;border:none;padding:14px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:4px;">دخول ✓</button>
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:8px 0;">
+      <button onclick="adminDirectLogin()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);padding:11px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:13px;cursor:pointer;">⚙️ دخول المشرف</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBER PROFILE MODAL -->
+<div id="profileModal" style="display:none;position:fixed;inset:0;background:rgba(10,15,30,.95);z-index:8000;overflow-y:auto;padding:20px;">
+  <div style="max-width:480px;margin:0 auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="font-family:'Amiri',serif;font-size:20px;color:var(--gold-light);">📊 ملفي الشخصي</div>
+      <button onclick="closeProfile()" style="background:rgba(255,255,255,.1);border:none;color:#fff;padding:8px 16px;border-radius:10px;font-family:'Tajawal',sans-serif;cursor:pointer;">✕ إغلاق</button>
+    </div>
+    <div id="profileContent"></div>
+  </div>
+</div>
